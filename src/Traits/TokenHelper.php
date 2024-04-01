@@ -20,6 +20,10 @@ trait TokenHelper
             $content = str_replace('##verificationUrl##', $models->verificationUrl, $content);
         }
 
+        if (isset($models->message)) {
+            $content = str_replace('##message##', $models->message, $content);
+        }
+
         // Replace model-attribute tokens.
         // Will look for pattern ##model.attribute## and replace the value if found.
         // Eg ##user.name##
