@@ -337,14 +337,14 @@ You should also include the filetype.
         }
 
         $data = [
-            'content'       => $this->replaceTokens($template->content, $this),
-            'preHeaderText' => $this->replaceTokens($template->preheader, $this),
-            'title'         => $this->replaceTokens($template->title, $this)
+            'content'       => TokenHelper::replace($template->content, $this),
+            'preHeaderText' => TokenHelper::replace($template->preheader, $this),
+            'title'         => TokenHelper::replace($template->title, $this)
         ];
 
         return $this->from($template->from['email'],$template->from['name'])
             ->view($template->view_path)
-            ->subject($this->replaceTokens($template->subject, $this))
+            ->subject(TokenHelper::replace($template->subject, $this))
             ->to($this->sendTo)
             ->with(['data'=>$data]);
     }

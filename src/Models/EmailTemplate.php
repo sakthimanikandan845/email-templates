@@ -35,7 +35,6 @@ class EmailTemplate extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use TokenHelper;
 
     /**
      * @var array
@@ -166,10 +165,10 @@ class EmailTemplate extends Model
 
         return [
                 'user' => $model->user,
-                'content' => $this->replaceTokens($this->content, $model),
-                'subject' => $this->replaceTokens($this->subject, $model),
-                'preHeaderText' => $this->replaceTokens($this->preheader, $model),
-                'title' => $this->replaceTokens($this->title, $model),
+                'content' => TokenHelper::replace($this->content, $model),
+                'subject' => TokenHelper::replace($this->subject, $model),
+                'preHeaderText' => TokenHelper::replace($this->preheader, $model),
+                'title' => TokenHelper::replace($this->title, $model),
                 'theme' => $this->theme->colours,
                 'logo' => $logo,
         ];

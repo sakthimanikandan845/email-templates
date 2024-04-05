@@ -1,11 +1,13 @@
 <?php
 
-namespace Visualbuilder\EmailTemplates\Traits;
+namespace Visualbuilder\EmailTemplates;
 
-use App\Models\EndUser;
+
 use Illuminate\Support\Facades\View;
+use Visualbuilder\EmailTemplates\Contracts\TokenReplacementInterface;
 
-trait TokenHelper
+
+class DefaultTokenHelper implements TokenReplacementInterface
 {
     public function replaceTokens($content, $models)
     {
@@ -24,9 +26,11 @@ trait TokenHelper
             $content = str_replace('##message##', $models->message, $content);
         }
 
-        // Replace model-attribute tokens.
-        // Will look for pattern ##model.attribute## and replace the value if found.
-        // Eg ##user.name##
+        /**
+         * Replace model-attribute tokens.
+         * Will look for pattern ##model.attribute## and replace the value if found.
+         * Eg ##user.name## or create your own accessors in a model
+         */
         preg_match_all('/##(.*?)\.(.*?)##/', $content, $matches);
 
         if (count($matches) > 0 && count($matches[0]) > 0) {
@@ -48,6 +52,7 @@ trait TokenHelper
             $coachingContract = $models->consentOptions->filter(function ($option) {
                 return $option->key == 'coaching-contract';
             });
+
             if($coachingContract && $models->user instanceof EndUser)
             {
                 if($order = $models->user->latestOrderWithCategory('Contract'))
@@ -62,8 +67,6 @@ trait TokenHelper
             }
 
         }
-
-
 
         // Replace config tokens.
         $allowedConfigKeys = config('filament-email-templates.config_keys');
@@ -87,7 +90,7 @@ trait TokenHelper
         return $content;
     }
 
-    public function buildEmailButton($content)
+    private function buildEmailButton($content)
     {
         $title = $url = '';
         if (preg_match('/(?<=##button).*?(?=#)/', $content, $matches)) {
@@ -104,14 +107,14 @@ trait TokenHelper
                     'title' => $title,
                     'data' => ['theme' => $this->theme->colours],
                 ])
-                           ->render();
+                    ->render();
             }
         };
 
         return '';
     }
 
-    public static function replaceButtonToken($content, $button)
+    private static function replaceButtonToken($content, $button)
     {
         $search = "/(?<=##button).*?(?=##)/";
         $replace = "";

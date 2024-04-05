@@ -35,6 +35,12 @@ class EmailTemplatesServiceProvider extends PackageServiceProvider
         $this->app->singleton(CreateMailableInterface::class, CreateMailableHelper::class);
         $this->app->singleton(FormHelperInterface::class, FormHelper::class);
         $this->app->register(EmailTemplatesEventServiceProvider::class);
+
+        // Add the binding for TokenReplacementInterface
+        $this->app->bind(
+            \Visualbuilder\EmailTemplates\Contracts\TokenReplacementInterface::class,
+            config('filament-email-templates.tokenHelperClass')
+        );
     }
 
     public function packageBooted(): void

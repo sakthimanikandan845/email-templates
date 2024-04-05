@@ -2,44 +2,67 @@
 
 return [
     //If you wish to customise the table name change this before migration
-    'table_name'       => 'vb_email_templates',
-    'theme_table_name'       => 'vb_email_templates_themes',
+    'table_name'         => 'vb_email_templates',
+    'theme_table_name'   => 'vb_email_templates_themes',
 
 
     //This is the app directory where generated Classes should be put
     "mailable_directory" => 'Mail/Visualbuilder/EmailTemplates',
 
+    //
+
+    /**
+     * If you want to use your own token helper replace this
+       */
+    'tokenHelperClass' => \Visualbuilder\EmailTemplates\DefaultTokenHelper::class,
+    /**
+     *  Eg create a file like this:-
+     *
+     *  namespace App\Helpers
+     *
+     *  use Visualbuilder\EmailTemplates\Contracts\TokenReplacementInterface;
+     *
+     *  class MyTokenHelper implements TokenReplacementInterface
+     *  {
+     *      public function replaceTokens($content, $models)
+ *          {
+     *            // Your Token helper logic here
+     *      }
+     *  }
+     */
+
+
     //Admin Panel Resource Navigation Options
-    'navigation'=>[
-        'sort'=>50,
-        'group'=>'Content Management',
+    'navigation'         => [
+        'sort'  => 50,
+        'group' => 'Content Management',
     ],
 
     //Email templates will be copied to resources/views/vendor/vb-email-templates/email
     //default.blade.php is base view that can be customised below
     'default_view'       => 'default',
 
-    'template_view_path'      => 'vb-email-templates::email',
+    'template_view_path' => 'vb-email-templates::email',
 
     //Default Logo
-    'logo'                    => 'media/email-templates/logo.png',
+    'logo'               => 'media/email-templates/logo.png',
 
     //Browsed Logo
-    'browsed_logo'            => 'media/email-templates/logos',
+    'browsed_logo'       => 'media/email-templates/logos',
 
     //Logo size in pixels -> 200 pixels high is plenty big enough.
-    'logo_width'              => '500',
-    'logo_height'             => '126',
+    'logo_width'         => '500',
+    'logo_height'        => '126',
 
     //Content Width in Pixels
-    'content_width'           => '600',
+    'content_width'      => '600',
 
     //Contact details included in default email templates
     'customer-services'  => ['email' => 'support@yourcompany.com',
                              'phone' => '+441273 455702'],
 
     //Footer Links
-    'links'                   => [
+    'links'              => [
         ['name' => 'Website', 'url' => 'https://yourwebsite.com', 'title' => 'Goto website'],
         ['name' => 'Privacy Policy', 'url' => 'https://yourwebsite.com/privacy-policy', 'title' => 'View Privacy Policy'],
     ],
@@ -47,10 +70,10 @@ return [
     //Options for alternative languages
     //Note that Laravel default locale is just 'en' you can use this but
     //we are being more specific to cater for English vs USA languages
-    'default_locale'          => 'en_GB',
+    'default_locale'     => 'en_GB',
 
     //These will be included in the language picker when editing an email template
-    'languages'               => [
+    'languages'          => [
         'en_GB' => ['display' => 'British', 'flag-icon' => 'gb'],
         'en_US' => ['display' => 'USA', 'flag-icon' => 'us'],
         'es'    => ['display' => 'Español', 'flag-icon' => 'es'],
@@ -60,15 +83,15 @@ return [
     ],
 
     //Notifiable Models who can receive emails
-    'recipients'              => [
-        '\\App\\Models\\User',
+    'recipients'         => [
+        App\Models\User::class,
     ],
 
     /**
      * Allowed config keys which can be inserted into email templates
      * eg use ##config.app.name## in the email template for automatic replacement.
      */
-    'config_keys'             => [
+    'config_keys'        => [
         'app.name',
         'app.url',
         'email-templates.customer-services'
@@ -78,7 +101,7 @@ return [
 
     //Most built-in emails can be automatically sent with minimal setup,
     //except "request password reset" requires a function in the User's model.  See readme.md for details
-    'send_emails'             => [
+    'send_emails'        => [
         'new_user_registered'    => true,
         'verification'           => true,
         'user_verified'          => true,
