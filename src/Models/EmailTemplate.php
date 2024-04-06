@@ -158,17 +158,17 @@ class EmailTemplate extends Model
      */
     public function getEmailPreviewData()
     {
-        $model = self::createEmailPreviewData();
+        $models = self::createEmailPreviewData();
 
         // preparing logo
         $logo = $this->resolveLogoUrl($this->logo);
 
         return [
                 'user' => $model->user,
-                'content' => TokenHelper::replace($this->content, $model),
-                'subject' => TokenHelper::replace($this->subject, $model),
-                'preHeaderText' => TokenHelper::replace($this->preheader, $model),
-                'title' => TokenHelper::replace($this->title, $model),
+                'content' => TokenHelper::replace($this->content, $models),
+                'subject' => TokenHelper::replace($this->subject, $models),
+                'preHeaderText' => TokenHelper::replace($this->preheader, $models),
+                'title' => TokenHelper::replace($this->title, $models),
                 'theme' => $this->theme->colours,
                 'logo' => $logo,
         ];
@@ -179,19 +179,19 @@ class EmailTemplate extends Model
      */
     public static function createEmailPreviewData()
     {
-        $model = (object) [];
+        $models = (object) [];
 
         $userModel = config('filament-email-templates.recipients')[0];
         //Setup some data for previewing email template
         $model->user = $userModel::first();
 
-        $model->tokenUrl = URL::to('/');
-        $model->verificationUrl = URL::to('/');
-        $model->expiresAt = now();
+        $models->tokenUrl = URL::to('/');
+        $models->verificationUrl = URL::to('/');
+        $models->expiresAt = now();
         /* Not used in preview but need to add something */
-        $model->plainText = Str::random(32);
+        $models->plainText = Str::random(32);
 
-        return $model;
+        return $models;
     }
 
     /**
@@ -241,10 +241,10 @@ class EmailTemplate extends Model
     public function getMailableClass()
     {
         $className = Str::studly($this->key);
-        $directory = str_replace('/', '\\', config('filament-email-templates.mailable_directory', 'Mail/Visualbuilder/EmailTemplates')); // Convert slashes to namespace format
-        $fullClassName = "\\App\\{$directory}\\{$className}";
+        $directory = str_replace('/', '\\', config('filament-email-templates.mailable_directory', 'Mail/Visualbuilder/EmailTemplates'));
+        $fullClassName = "App\\" . rtrim($directory, '\\') . "\\{$className}";
 
-        if (! class_exists($fullClassName)) {
+        if (!class_exists($fullClassName)) {
             throw new \Exception("Mailable class {$fullClassName} does not exist.");
         }
 

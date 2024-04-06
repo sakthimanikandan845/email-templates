@@ -5,11 +5,20 @@ namespace Visualbuilder\EmailTemplates;
 
 use Illuminate\Support\Facades\View;
 use Visualbuilder\EmailTemplates\Contracts\TokenReplacementInterface;
+use Visualbuilder\EmailTemplates\Models\EmailTemplate;
 
 
 class DefaultTokenHelper implements TokenReplacementInterface
 {
-    public function replaceTokens($content, $models)
+    /**
+     * Replace tokens in the content with actual values from the models.
+     *
+     * @param  string  $content  The content with tokens to be replaced
+     * @param  array  $models  The models containing the values for the tokens
+     *
+     * @return string The content with replaced tokens
+     */
+    public function replaceTokens(string $content, $models): string
     {
         // Replace singular tokens.
         // These are for password reset and email verification
@@ -44,7 +53,9 @@ class DefaultTokenHelper implements TokenReplacementInterface
             }
         }
 
-        //Insert user-consent
+        /**
+         * User Consent Email tokens
+         */
         if(isset($models->consentOptions)){
             $content =  str_replace('##consent-options##',view('vendor.user-consent.mails.accept-notification', ['consentOptions' => $models->consentOptions])->render(),$content);
 
@@ -84,13 +95,16 @@ class DefaultTokenHelper implements TokenReplacementInterface
             }
         }
 
-        $button = $this->buildEmailButton($content);
-        $content = self::replaceButtonToken($content, $button);
+        if(isset($models->emailTemplate)){
+            $button = $this->buildEmailButton($content, $models->emailTemplate);
+            $content = self::replaceButtonToken($content, $button);
+        }
+
 
         return $content;
     }
 
-    private function buildEmailButton($content)
+    private function buildEmailButton($content, $emailTemplate)
     {
         $title = $url = '';
         if (preg_match('/(?<=##button).*?(?=#)/', $content, $matches)) {
@@ -105,7 +119,7 @@ class DefaultTokenHelper implements TokenReplacementInterface
                 return View::make('vb-email-templates::email.parts._button', [
                     'url' => $url,
                     'title' => $title,
-                    'data' => ['theme' => $this->theme->colours],
+                    'data' => ['theme' => $emailTemplate->theme->colours],
                 ])
                     ->render();
             }

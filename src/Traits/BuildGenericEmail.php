@@ -9,6 +9,8 @@ use Visualbuilder\EmailTemplates\Facades\TokenHelper;
 
 trait BuildGenericEmail
 {
+
+    public $emailTemplate;
     /**
      * Build the message.
      *
@@ -16,7 +18,7 @@ trait BuildGenericEmail
      */
     public function build()
     {
-        $template = EmailTemplate::findEmailByKey($this->template, App::currentLocale());
+        $this->emailTemplate =  EmailTemplate::findEmailByKey($this->template, App::currentLocale());
 
         if($this->attachment ?? false) {
             $this->attach(
@@ -30,19 +32,19 @@ trait BuildGenericEmail
 
 
         // preparing logo
-        $logo = $template->resolveLogoUrl($template->logo);
+        $logo = $this->emailTemplate->resolveLogoUrl($this->emailTemplate->logo);
 
         $data = [
-            'content' => TokenHelper::replace($template->content, $this),
-            'preHeaderText' => TokenHelper::replace($template->preheader, $this),
-            'title' => TokenHelper::replace($template->title, $this),
-            'theme' => $template->theme->colours,
+            'content' => TokenHelper::replace($this->emailTemplate->content, $this),
+            'preHeaderText' => TokenHelper::replace($this->emailTemplate->preheader, $this),
+            'title' => TokenHelper::replace($this->emailTemplate->title, $this),
+            'theme' => $this->emailTemplate->theme->colours,
             'logo'  => $logo,
         ];
 
-        return $this->from($template->from['email'], $template->from['name'])
-            ->view($template->view_path)
-            ->subject(TokenHelper::replace($template->subject, $this))
+        return $this->from($this->emailTemplate->from['email'], $this->emailTemplate->from['name'])
+            ->view($this->emailTemplate->view_path)
+            ->subject(TokenHelper::replace($this->emailTemplate->subject, $this))
             ->to($this->sendTo)
             ->with(['data' => $data]);
     }

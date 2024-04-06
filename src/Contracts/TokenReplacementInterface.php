@@ -5,5 +5,5 @@ namespace Visualbuilder\EmailTemplates\Contracts;
 
 interface TokenReplacementInterface
 {
-    public function replaceTokens($content, $models);
+    public function replaceTokens(string $content,array $models);
 }
