@@ -36,12 +36,12 @@ class EmailTemplateResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return config('filament-email-templates.navigation.group');
+        return config('filament-email-templates.navigation.templates.group');
     }
 
     public static function getNavigationSort(): ?int
     {
-        return config('filament-email-templates.navigation.sort');
+        return config('filament-email-templates.navigation.templates.sort');
     }
 
     public static function getModelLabel(): string
@@ -56,7 +56,7 @@ class EmailTemplateResource extends Resource
 
     public static function getCluster(): string
     {
-        return config('filament-email-templates.navigation.cluster');
+        return config('filament-email-templates.navigation.templates.cluster');
     }
 
     public static function form(Form $form): Form

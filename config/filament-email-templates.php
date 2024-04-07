@@ -13,8 +13,8 @@ return [
 
     /**
      * If you want to use your own token helper replace this
-       */
-    'tokenHelperClass' => \Visualbuilder\EmailTemplates\DefaultTokenHelper::class,
+     */
+    'tokenHelperClass'   => \Visualbuilder\EmailTemplates\DefaultTokenHelper::class,
     /**
      *  Eg create a file like this:-
      *
@@ -25,7 +25,7 @@ return [
      *  class MyTokenHelper implements TokenReplacementInterface
      *  {
      *      public function replaceTokens($content, $models)
- *          {
+     *          {
      *            // Your Token helper logic here
      *      }
      *  }
@@ -34,10 +34,20 @@ return [
 
     //Admin Panel Resource Navigation Options
     'navigation'         => [
-        'sort'  => 50,
-        'group' => 'Content Management',
-        'cluster' => false,
-
+        'templates' => [
+            'sort'    => 10,
+            'label'   => 'Email Templates',
+            'icon'    => 'heroicon-o-envelope',
+            'group'   => 'Content',
+            'cluster' => false,
+        ],
+        'themes'    => [
+            'sort'    => 20,
+            'label'   => 'Email Template Themes',
+            'icon'    => 'heroicon-o-paint-brush',
+            'group'   => 'Content',
+            'cluster' => false,
+        ],
     ],
 
     //Email templates will be copied to resources/views/vendor/vb-email-templates/email

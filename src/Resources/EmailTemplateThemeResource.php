@@ -21,12 +21,12 @@ class EmailTemplateThemeResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return config('filament-email-templates.navigation.group');
+        return config('filament-email-templates.navigation.themes.group');
     }
 
     public static function getNavigationSort(): ?int
     {
-        return config('filament-email-templates.navigation.sort');
+        return config('filament-email-templates.navigation.themes.sort');
     }
 
     public static function getModelLabel(): string
@@ -41,7 +41,7 @@ class EmailTemplateThemeResource extends Resource
 
     public static function getCluster(): string
     {
-        return config('filament-email-templates.navigation.cluster');
+        return config('filament-email-templates.navigation.themes.cluster');
     }
 
     public static function getPreviewData()
