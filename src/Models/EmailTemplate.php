@@ -160,9 +160,6 @@ class EmailTemplate extends Model
     {
         $models = self::createEmailPreviewData();
 
-        // preparing logo
-        $logo = $this->resolveLogoUrl($this->logo);
-
         return [
                 'user' => $model->user,
                 'content' => TokenHelper::replace($this->content, $models),
@@ -170,7 +167,7 @@ class EmailTemplate extends Model
                 'preHeaderText' => TokenHelper::replace($this->preheader, $models),
                 'title' => TokenHelper::replace($this->title, $models),
                 'theme' => $this->theme->colours,
-                'logo' => $logo,
+                'logo' => $this->logo,
         ];
     }
 
@@ -251,20 +248,14 @@ class EmailTemplate extends Model
         return $fullClassName;
     }
 
-    /**
-     * Resolve logo to a url
-     * @return string
-     */
-    public function resolveLogoUrl($logo):string
+
+    public function getLogoAttribute(): string
     {
-        if (is_null($logo)) {
-            return asset(config('filament-email-templates.logo'));
-        }
+        //Get Database logo or config logo
+        $logo = $this->attributes['logo'] ?? config('filament-email-templates.logo');
 
-        if (Str::isUrl($logo)) {
-            return $logo;
-        }
-
-        return asset($logo);
+        // Return the logo if it's a full URL, otherwise, return the asset URL.
+        return Str::isUrl($logo) ? $logo : asset($logo);
     }
+
 }
