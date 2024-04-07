@@ -36,6 +36,8 @@ return [
     'navigation'         => [
         'sort'  => 50,
         'group' => 'Content Management',
+        'cluster' => false,
+
     ],
 
     //Email templates will be copied to resources/views/vendor/vb-email-templates/email

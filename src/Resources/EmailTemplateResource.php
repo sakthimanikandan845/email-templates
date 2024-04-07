@@ -54,6 +54,11 @@ class EmailTemplateResource extends Resource
         return __('vb-email-templates::email-templates.resource_name.plural');
     }
 
+    public static function getCluster(): string
+    {
+        return config('filament-email-templates.navigation.cluster');
+    }
+
     public static function form(Form $form): Form
     {
 

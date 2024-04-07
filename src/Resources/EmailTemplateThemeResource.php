@@ -39,6 +39,11 @@ class EmailTemplateThemeResource extends Resource
         return __('vb-email-templates::email-templates.theme_resource_name.plural');
     }
 
+    public static function getCluster(): string
+    {
+        return config('filament-email-templates.navigation.cluster');
+    }
+
     public static function getPreviewData()
     {
         $emailTemplate = EmailTemplate::first();
