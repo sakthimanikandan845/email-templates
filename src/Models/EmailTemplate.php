@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Visualbuilder\EmailTemplates\Database\Factories\EmailTemplateFactory;
-use Visualbuilder\EmailTemplates\Traits\TokenHelper;
+use Visualbuilder\EmailTemplates\Facades\TokenHelper;
+
 
 /**
  * @property int $id
@@ -161,7 +162,7 @@ class EmailTemplate extends Model
         $models = self::createEmailPreviewData();
 
         return [
-                'user' => $model->user,
+                'user' => $models->user,
                 'content' => TokenHelper::replace($this->content, $models),
                 'subject' => TokenHelper::replace($this->subject, $models),
                 'preHeaderText' => TokenHelper::replace($this->preheader, $models),
@@ -180,7 +181,7 @@ class EmailTemplate extends Model
 
         $userModel = config('filament-email-templates.recipients')[0];
         //Setup some data for previewing email template
-        $model->user = $userModel::first();
+        $models->user = $userModel::first();
 
         $models->tokenUrl = URL::to('/');
         $models->verificationUrl = URL::to('/');
@@ -205,8 +206,8 @@ class EmailTemplate extends Model
 
         return $query->whereIn('language', $languages)
                 ->orderByRaw(
-                    "(CASE WHEN language = ? THEN 1 ELSE 2 END)",
-                    [$language]
+                        "(CASE WHEN language = ? THEN 1 ELSE 2 END)",
+                        [$language]
                 );
     }
 
@@ -216,7 +217,7 @@ class EmailTemplate extends Model
     public function viewPath(): Attribute
     {
         return new Attribute(
-            get: fn () => config('filament-email-templates.template_view_path').'.'.$this->view
+                get: fn () => config('filament-email-templates.template_view_path').'.'.$this->view
         );
     }
 
