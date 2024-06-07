@@ -20,19 +20,15 @@ class DefaultTokenHelper implements TokenReplacementInterface
      */
     public function replaceTokens(string $content, $models): string
     {
-        // Replace singular tokens.
-        // These are for password reset and email verification
 
-        if (isset($models->tokenUrl)) {
-            $content = str_replace('##tokenURL##', $models->tokenUrl, $content);
-        }
-
-        if (isset($models->verificationUrl)) {
-            $content = str_replace('##verificationUrl##', $models->verificationUrl, $content);
-        }
-
-        if (isset($models->message)) {
-            $content = str_replace('##message##', $models->message, $content);
+        /**
+         * Replace singular tokens for password reset and validations
+         * Add custom tokens in the config
+         */
+        foreach (config('filament-email-templates.known_tokens') as $key){
+            if (isset($models->{$key})) {
+                $content = str_replace("##$key##", $models->{$key}, $content);
+            }
         }
 
         /**
@@ -48,36 +44,14 @@ class DefaultTokenHelper implements TokenReplacementInterface
                 $attributeKey = $matches[2][$i];
                 $replacement = (isset($models->$modelKey) && isset($models->$modelKey->$attributeKey))?$models->$modelKey->$attributeKey:"";
                 $content = str_replace($matches[0][$i], $replacement, $content);
+
             }
         }
 
         /**
-         * User Consent Email tokens
+         * Replace config tokens.
+         * Define which tokens are allowed in this config setting
          */
-        if(isset($models->consentOptions)){
-            $content =  str_replace('##consent-options##',view('vendor.user-consent.mails.accept-notification', ['consentOptions' => $models->consentOptions])->render(),$content);
-
-
-            $coachingContract = $models->consentOptions->filter(function ($option) {
-                return $option->key == 'coaching-contract';
-            });
-
-            if($coachingContract && $models->user instanceof EndUser)
-            {
-                if($order = $models->user->latestOrderWithCategory('Contract'))
-                {
-                    $totalCoachingHours = $order->total_coaching_duration;
-                    $expectedWeeks = estimateCoachingWeeks($totalCoachingHours);
-                    $content  = str_replace('{{ total_hours_coaching }}', $totalCoachingHours,$content);
-                    $content  = str_replace('{{ expected_weeks }}', $expectedMonths,$content);
-                }
-
-
-            }
-
-        }
-
-        // Replace config tokens.
         $allowedConfigKeys = config('filament-email-templates.config_keys');
 
         preg_match_all('/##config\.(.*?)##/', $content, $matches);
@@ -92,6 +66,7 @@ class DefaultTokenHelper implements TokenReplacementInterface
                 }
             }
         }
+
 
         if(isset($models->emailTemplate)){
             $button = $this->buildEmailButton($content, $models->emailTemplate);
