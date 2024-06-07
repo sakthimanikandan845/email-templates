@@ -46,10 +46,8 @@ class DefaultTokenHelper implements TokenReplacementInterface
             for ($i = 0; $i < count($matches[0]); $i++) {
                 $modelKey = $matches[1][$i];
                 $attributeKey = $matches[2][$i];
-
-                if (isset($models->$modelKey) && isset($models->$modelKey->$attributeKey)) {
-                    $content = str_replace($matches[0][$i], $models->$modelKey->$attributeKey, $content);
-                }
+                $replacement = (isset($models->$modelKey) && isset($models->$modelKey->$attributeKey))?$models->$modelKey->$attributeKey:"";
+                $content = str_replace($matches[0][$i], $replacement, $content);
             }
         }
 
