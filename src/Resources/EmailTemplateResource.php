@@ -15,6 +15,7 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use FilamentTiptapEditor\TiptapEditor;
+use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
@@ -57,6 +58,11 @@ class EmailTemplateResource extends Resource
     public static function getCluster(): string
     {
         return config('filament-email-templates.navigation.templates.cluster');
+    }
+
+    public static function getSubNavigationPosition(): SubNavigationPosition
+    {
+        return config('filament-email-templates.navigation.templates.position');
     }
 
     public static function form(Form $form): Form

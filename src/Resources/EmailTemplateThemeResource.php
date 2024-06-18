@@ -4,6 +4,7 @@ namespace Visualbuilder\EmailTemplates\Resources;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -42,6 +43,11 @@ class EmailTemplateThemeResource extends Resource
     public static function getCluster(): string
     {
         return config('filament-email-templates.navigation.themes.cluster');
+    }
+
+    public static function getSubNavigationPosition(): SubNavigationPosition
+    {
+        return config('filament-email-templates.navigation.templates.position');
     }
 
     public static function getPreviewData()
