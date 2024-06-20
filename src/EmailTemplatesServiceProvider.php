@@ -82,7 +82,7 @@ class EmailTemplatesServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-            Css::make('vb-email-templates-styles', __DIR__.'/../assets/flag-icons/css/flag-icon-min.css'),
+            Css::make('vb-email-templates-styles', __DIR__.'/../assets/flag-icons/css/flag-icon.min.css'),
         ];
     }
 }
