@@ -61,19 +61,16 @@ class EmailTemplatesServiceProvider extends PackageServiceProvider
     protected function publishResources()
     {
         $this->publishes([
-                             __DIR__
-                             .'/../database/seeders/EmailTemplateSeeder.php' => database_path('seeders/EmailTemplateSeeder.php'),
-                             __DIR__.'/../database/seeders/EmailTemplateThemeSeeder.php' => database_path('seeders/EmailTemplateThemeSeeder.php'),
-                         ], 'filament-email-templates-seeds');
+                            __DIR__
+                            .'/../database/seeders/EmailTemplateSeeder.php' => database_path('seeders/EmailTemplateSeeder.php'),
+                            __DIR__.'/../database/seeders/EmailTemplateThemeSeeder.php' => database_path('seeders/EmailTemplateThemeSeeder.php'),
+                        ], 'filament-email-templates-seeds');
 
         $this->publishes([
-                             __DIR__.'/../media/' => public_path('media/email-templates'),
-                             __DIR__.'/../assets/flag-icons/flags' => public_path('css/flags'),
-                         ], 'filament-email-templates-assets');
-
-        $this->publishes([
-                             __DIR__.'/../resources/views' => resource_path('views/vendor/vb-email-templates'),
-                         ], 'filament-email-templates-assets');
+                            __DIR__.'/../media/' => public_path('media/email-templates'),
+                            __DIR__.'/../assets/flag-icons/flags' => public_path('css/flags'),
+                            __DIR__.'/../resources/views' => resource_path('views/vendor/vb-email-templates'),
+                        ], 'filament-email-templates-assets');
     }
 
     /**
