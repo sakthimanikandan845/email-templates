@@ -53,6 +53,7 @@ return [
                         'icon'    => 'heroicon-o-envelope',
                         'group'   => 'Content',
                         'cluster' => false,
+                         'position' => \Filament\Pages\SubNavigationPosition::Top
                 ],
                 'themes'    => [
                         'sort'    => 20,
@@ -60,6 +61,7 @@ return [
                         'icon'    => 'heroicon-o-paint-brush',
                         'group'   => 'Content',
                         'cluster' => false,
+                        'position' => \Filament\Pages\SubNavigationPosition::Top
                 ],
         ],
 
