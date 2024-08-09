@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Visualbuilder\EmailTemplates\EmailTemplatesPlugin;
 use Visualbuilder\EmailTemplates\Models\EmailTemplate;
 use Visualbuilder\EmailTemplates\Models\EmailTemplateTheme;
 use Visualbuilder\EmailTemplates\Resources\EmailTemplateThemeResource\Pages;
@@ -22,7 +23,7 @@ class EmailTemplateThemeResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return config('filament-email-templates.navigation.themes.group');
+        return EmailTemplatesPlugin::get()->getNavigationGroup();
     }
 
     public static function getNavigationSort(): ?int
