@@ -41,16 +41,16 @@ class EmailTemplate extends Model
      * @var array
      */
     protected $fillable = [
-            'from',
-            'key',
-            'name',
-            'view',
-            'subject',
-            'title',
-            'preheader',
-            'content',
-            'language',
-            'logo',
+        'from',
+        'key',
+        'name',
+        'view',
+        'subject',
+        'title',
+        'preheader',
+        'content',
+        'language',
+        'logo',
 
     ];
 
@@ -58,10 +58,10 @@ class EmailTemplate extends Model
      * @var string[]
      */
     protected $casts = [
-            'deleted_at' => 'datetime:Y-m-d H:i:s',
-            'created_at' => 'datetime:Y-m-d H:i:s',
-            'updated_at' => 'datetime:Y-m-d H:i:s',
-            'from' => 'array',
+        'deleted_at' => 'datetime:Y-m-d H:i:s',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'from' => 'array',
     ];
     /**
      * @var string[]
@@ -93,9 +93,9 @@ class EmailTemplate extends Model
         //For multi site domains this key will need to include the site_id
         return Cache::remember($cacheKey, now()->addMinutes(60), function () use ($key, $language) {
             return self::query()
-                    ->language($language ?? config('filament-email-templates.default_locale'))
-                    ->where("key", $key)
-                    ->firstOrFail();
+                ->language($language ?? config('filament-email-templates.default_locale'))
+                ->where("key", $key)
+                ->firstOrFail();
         });
     }
 
@@ -162,13 +162,13 @@ class EmailTemplate extends Model
         $models = self::createEmailPreviewData();
 
         return [
-                'user' => $models->user,
-                'content' => TokenHelper::replace($this->content, $models),
-                'subject' => TokenHelper::replace($this->subject, $models),
-                'preHeaderText' => TokenHelper::replace($this->preheader, $models),
-                'title' => TokenHelper::replace($this->title, $models),
-                'theme' => $this->theme->colours,
-                'logo' => $this->logo,
+            'user' => $models->user,
+            'content' => TokenHelper::replace($this->content ?? '', $models),
+            'subject' => TokenHelper::replace($this->subject ?? '', $models),
+            'preHeaderText' => TokenHelper::replace($this->preheader ?? '', $models),
+            'title' => TokenHelper::replace($this->title ?? '', $models),
+            'theme' => $this->theme->colours,
+            'logo' => $this->logo,
         ];
     }
 
@@ -177,7 +177,7 @@ class EmailTemplate extends Model
      */
     public static function createEmailPreviewData()
     {
-        $models = (object) [];
+        $models = (object)[];
 
         $userModel = config('filament-email-templates.recipients')[0];
         //Setup some data for previewing email template
@@ -195,7 +195,7 @@ class EmailTemplate extends Model
     /**
      * Efficient method to return requested template locale or default language template in one query
      *
-     * @param  Builder  $query
+     * @param Builder $query
      * @param $language
      *
      * @return Builder
@@ -205,10 +205,10 @@ class EmailTemplate extends Model
         $languages = [$language, config('filament-email-templates.default_locale')];
 
         return $query->whereIn('language', $languages)
-                ->orderByRaw(
-                        "(CASE WHEN language = ? THEN 1 ELSE 2 END)",
-                        [$language]
-                );
+            ->orderByRaw(
+                "(CASE WHEN language = ? THEN 1 ELSE 2 END)",
+                [$language]
+            );
     }
 
     /**
@@ -217,7 +217,7 @@ class EmailTemplate extends Model
     public function viewPath(): Attribute
     {
         return new Attribute(
-                get: fn () => config('filament-email-templates.template_view_path').'.'.$this->view
+            get: fn() => config('filament-email-templates.template_view_path') . '.' . $this->view
         );
     }
 
@@ -227,7 +227,7 @@ class EmailTemplate extends Model
     public function getMailableExistsAttribute(): bool
     {
         $className = Str::studly($this->key);
-        $filePath = app_path(config('filament-email-templates.mailable_directory')."/{$className}.php");
+        $filePath = app_path(config('filament-email-templates.mailable_directory') . "/{$className}.php");
 
         return File::exists($filePath);
     }
