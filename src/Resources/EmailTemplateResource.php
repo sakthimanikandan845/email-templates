@@ -98,11 +98,11 @@ class EmailTemplateResource extends Resource
                                                 fn(Set $set, ?string $state) => $set('key', Str::slug($state))
                                             )
                                             ->options(function () {
-                                                $option = [];
+                                                $options = [];
                                                 foreach (config('filament-email-templates.template_keys') as $key => $value) {
-                                                    $option[$value] = __($value);
+                                                    $options[$key] = __($value);
                                                 }
-                                                return $option;
+                                                return $options;
                                             })
                                             ->label(__('vb-email-templates::email-templates.form-fields-labels.key'))
                                             ->hint(__('vb-email-templates::email-templates.form-fields-labels.key-hint'))
