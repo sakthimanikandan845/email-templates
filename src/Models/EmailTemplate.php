@@ -51,6 +51,7 @@ class EmailTemplate extends Model
         'content',
         'language',
         'logo',
+        'ordering',
 
     ];
 
