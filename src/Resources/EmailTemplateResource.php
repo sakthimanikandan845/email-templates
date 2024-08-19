@@ -191,7 +191,7 @@ class EmailTemplateResource extends Resource
     {
 
         return $table
-            ->query(EmailTemplate::query()->orderBy('ordering'))
+            ->query(EmailTemplate::query())
             ->columns(
             [
                 TextColumn::make('id'),
@@ -257,7 +257,7 @@ class EmailTemplateResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]
-            )->reorderable('ordering');
+            );
     }
 
     public static function getPages(): array
