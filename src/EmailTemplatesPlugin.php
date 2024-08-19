@@ -32,7 +32,7 @@ class EmailTemplatesPlugin implements Plugin
         return $this;
     }
 
-    public function getNavigationGroup(): string
+    public function getNavigationGroup(): ?string
     {
         return $this->navigationGroup ?? config('filament-email-templates.navigation.templates.group');
     }
