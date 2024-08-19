@@ -194,15 +194,18 @@ class EmailTemplateResource extends Resource
             ->query(EmailTemplate::query())
             ->columns(
             [
-                TextColumn::make('id'),
+                TextColumn::make('id')
+                        ->sortable()
+                        ->searchable(),
                 TextColumn::make('name')
-                    ->limit(50)
-                    ->sortable()
-                    ->searchable(),
+                        ->limit(50)
+                        ->sortable()
+                        ->searchable(),
                 TextColumn::make('language')
-                    ->limit(50),
+                        ->limit(50),
                 TextColumn::make('subject')
-                    ->limit(50),
+                        ->searchable()
+                        ->limit(50),
             ]
         )
             ->filters(
