@@ -11,7 +11,8 @@ use Visualbuilder\EmailTemplates\Mail\UserVerifyEmail;
 use Visualbuilder\EmailTemplates\Models\EmailTemplate;
 use Visualbuilder\EmailTemplates\Tests\Models\User;
 
-it('can replace tokens in user welcome email', function () {
+it('can replace tokens in user registered email', function () {
+
     EmailTemplate::factory()->create(
         [
             'key' => 'user-welcome',
@@ -47,14 +48,14 @@ it('can replace tokens in user password reset request email', function () {
                             <p>If you didn't request this password reset, no further action is needed. However if this has happened more than once in a short space of time, please let us know.</p>
                             <p>We'll never ask for your credentials over the phone or by email and you should never share your credentials</p>
                             <p>If you’re having trouble clicking the 'Change My Password' button, copy and paste the URL below into your web browser:</p>
-                            <p><a href='##tokenURL##'>##tokenURL##</a></p>
+                            <p><a href='##tokenUrl##'>##tokenUrl##</a></p>
                             <p>Kind Regards,<br>##config.app.name##</p>",
         ]
     );
 
     $this->makeTheme();
     $user = User::factory()->create();
-    $token = Password::broker()->createToken($user);
+    $token = \Illuminate\Support\Facades\Password::broker()->createToken($user);
     $tokenUrl = "https://yourwebsite.com/user/password/reset/$token";
     $mailable = new UserRequestPasswordResetEmail($user, $tokenUrl);
     $mailable->assertSeeInHtml("Hello $user->name,");

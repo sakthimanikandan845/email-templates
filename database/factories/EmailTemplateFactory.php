@@ -33,7 +33,7 @@ class EmailTemplateFactory extends Factory
             'preheader'  => $this->faker->sentence,
             'subject'    => $this->faker->sentence,
             'title'      => $this->faker->sentence,
-            'content'    => new HtmlString("<p>".$this->faker->text."</p>"),
+            'content'    => "<p>".$this->faker->text."</p>",
             'logo'       => config('filament-email-templates.logo'),
             'created_at' => now(),
             'updated_at' => now(),
