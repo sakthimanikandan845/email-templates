@@ -68,7 +68,6 @@ class EmailTemplatesServiceProvider extends PackageServiceProvider
 
         $this->publishes([
                             __DIR__.'/../media/' => public_path('media/email-templates'),
-                            __DIR__.'/../assets/flag-icons/flags' => public_path('css/flags'),
                             __DIR__.'/../resources/views' => resource_path('views/vendor/vb-email-templates'),
                         ], 'filament-email-templates-assets');
     }
@@ -79,7 +78,8 @@ class EmailTemplatesServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-            Css::make('vb-email-templates-styles', __DIR__.'/../assets/flag-icons/css/flag-icon.min.css'),
+                Css::make('vb-email-templates-styles', 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css'),
+
         ];
     }
 }
