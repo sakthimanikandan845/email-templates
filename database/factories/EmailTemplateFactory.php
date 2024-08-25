@@ -3,6 +3,7 @@
 namespace Visualbuilder\EmailTemplates\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Visualbuilder\EmailTemplates\Models\EmailTemplate;
 
@@ -32,7 +33,7 @@ class EmailTemplateFactory extends Factory
             'preheader'  => $this->faker->sentence,
             'subject'    => $this->faker->sentence,
             'title'      => $this->faker->sentence,
-            'content'    => $this->faker->text,
+            'content'    => new HtmlString("<p>".$this->faker->text."</p>"),
             'logo'       => config('filament-email-templates.logo'),
             'created_at' => now(),
             'updated_at' => now(),

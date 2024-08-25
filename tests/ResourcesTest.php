@@ -30,12 +30,14 @@ it('can list email templates', function () {
 
 // create tests
 it('can access email template create page', function () {
-    get(EmailTemplateResource::getUrl('create'))
-        ->assertSuccessful();
+    $test =get(EmailTemplateResource::getUrl('create'));
+
+    $test->assertSuccessful();
 });
 
 it('can create email template', function () {
     $newData = EmailTemplate::factory()->make();
+
     $storedData = livewire(CreateEmailTemplate::class)
         ->fillForm([
             'key' => $newData->key,
@@ -53,7 +55,7 @@ it('can create email template', function () {
         ])
         ->call('create')
         ->assertHasNoFormErrors();
-    
+
     $this->assertDatabaseHas(EmailTemplate::class, [
         'key' => $storedData->data['key'],
         'language' => $storedData->data['language'],

@@ -182,7 +182,6 @@ class EmailTemplate extends Model
         $userModel = config('filament-email-templates.recipients')[0];
         //Setup some data for previewing email template
         $models->user = $userModel::first();
-
         $models->tokenUrl = URL::to('/');
         $models->verificationUrl = URL::to('/');
         $models->expiresAt = now();
