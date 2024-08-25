@@ -61,7 +61,7 @@ class EmailTemplateResource extends Resource
         return config('filament-email-templates.navigation.templates.cluster');
     }
 
-    public static function getSubNavigationPosition()
+    public static function getSubNavigationPosition(): SubNavigationPosition
     {
         return config('filament-email-templates.navigation.templates.position');
     }

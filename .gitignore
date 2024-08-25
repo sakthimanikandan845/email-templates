@@ -25,3 +25,4 @@ Homestead.json
 .DS_Store
 banner.psd
 .php-cs-fixer.cache
+test-results
