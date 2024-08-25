@@ -49,5 +49,13 @@ jobs:
                     echo "::add-matcher::${{ runner.tool_cache }}/php.json"
                     echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
+            -   name: Setup Database
+                run: |
+                  echo "DB_CONNECTION=sqlite" >> $GITHUB_ENV
+                  echo "DB_DATABASE=:memory:" >> $GITHUB_ENV
+
+            -   name: Run database migrations
+                run: php artisan migrate
+
             -   name: Execute tests
                 run: vendor/bin/pest
