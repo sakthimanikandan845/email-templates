@@ -55,7 +55,7 @@ it('can replace tokens in user password reset request email', function () {
 
     $this->makeTheme();
     $user = User::factory()->create();
-    $token = \Illuminate\Support\Facades\Password::broker()->createToken($user);
+    $token = Str::random(24);
     $tokenUrl = "https://yourwebsite.com/user/password/reset/$token";
     $mailable = new UserRequestPasswordResetEmail($user, $tokenUrl);
     $mailable->assertSeeInHtml("Hello $user->name,");
