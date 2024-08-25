@@ -61,7 +61,7 @@ class EmailTemplateResource extends Resource
         return config('filament-email-templates.navigation.templates.cluster');
     }
 
-    public static function getSubNavigationPosition(): SubNavigationPosition
+    public static function getSubNavigationPosition()
     {
         return config('filament-email-templates.navigation.templates.position');
     }
@@ -71,8 +71,6 @@ class EmailTemplateResource extends Resource
 
         $formHelper = app(FormHelperInterface::class);
         $templates = $formHelper->getTemplateViewOptions();
-        $recipients = $formHelper->getRecipientOptions();
-
 
         return $form->schema(
             [
@@ -93,32 +91,25 @@ class EmailTemplateResource extends Resource
                             Grid::make(['default' => 1, 'sm' => 1, 'md' => 2])
                                 ->schema(
                                     [
-                                        Select::make('key')
+                                        TextInput::make('key')
                                             ->afterStateUpdated(
-                                                fn(Set $set, ?string $state) => $set('key', Str::slug($state))
+                                                fn (Set $set, ?string $state) => $set('key', Str::slug($state))
                                             )
-                                            ->options(function () {
-                                                $options = [];
-                                                foreach (config('filament-email-templates.template_keys') as $key => $value) {
-                                                    $options[$key] = __($value);
-                                                }
-                                                return $options;
-                                            })
                                             ->label(__('vb-email-templates::email-templates.form-fields-labels.key'))
                                             ->hint(__('vb-email-templates::email-templates.form-fields-labels.key-hint'))
                                             ->required()
-                                            ->unique(ignorable: fn($record) => $record),
+                                            ->unique(ignorable: fn ($record) => $record),
                                         Select::make('language')
                                             ->options($formHelper->getLanguageOptions())
                                             ->default(config('filament-email-templates.default_locale'))
                                             ->searchable()
                                             ->allowHtml(),
                                         TextInput::make('from.email')->default(config('mail.from.address'))
-                                            ->label(__('vb-email-templates::email-templates.form-fields-labels.email-from'))
-                                            ->email(),
+                                                ->label(__('vb-email-templates::email-templates.form-fields-labels.email-from'))
+                                                ->email(),
                                         TextInput::make('from.name')->default(config('mail.from.name'))
-                                            ->label(__('vb-email-templates::email-templates.form-fields-labels.email-from-name'))
-                                            ->string(),
+                                                ->label(__('vb-email-templates::email-templates.form-fields-labels.email-from-name'))
+                                                ->string(),
 
                                         Select::make('view')
                                             ->label(__('vb-email-templates::email-templates.form-fields-labels.template-view'))
