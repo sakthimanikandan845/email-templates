@@ -81,6 +81,21 @@ class EmailTemplate extends Model
         $this->setTableFromConfig();
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        // When an email template is updated
+        static::updated(function ($template) {
+            self::clearEmailTemplateCache($template->key, $template->language);
+        });
+
+        // When an email template is deleted
+        static::deleted(function ($template) {
+            self::clearEmailTemplateCache($template->key, $template->language);
+        });
+    }
+
     public function setTableFromConfig()
     {
         $this->table = config('filament-email-templates.table_name');
@@ -97,6 +112,12 @@ class EmailTemplate extends Model
                 ->where("key", $key)
                 ->firstOrFail();
         });
+    }
+
+    public static function clearEmailTemplateCache($key, $language)
+    {
+        $cacheKey = "email_by_key_{$key}_{$language}";
+        Cache::forget($cacheKey);
     }
 
     /**
