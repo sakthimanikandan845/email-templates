@@ -25,7 +25,7 @@
 
 We use the standard Laravel mail sending capability, the package simply allows content editing and faster adding of new template Classes
 
-![Email Preview](./media/ThemeEditor.png)
+![Email Preview](./media/ThemeEditor.jpg)
 
 ## Installation
 
@@ -39,11 +39,13 @@ The --seed option will populate 7 default templates which you can then edit in t
 ```bash
  php artisan filament-email-templates:install --seed
 ```
-
+Note: The seeder can also be edited directly if you wish to prepopulate with your own content.
+`database\Seeders\EmailTemplateSeeder.php`
 
 ### Adding the plugin to a panel
 Add this plugin to panel using plugins() method in app/Providers/Filament/AdminPanelProvider.php:
-```bash
+
+```php
 use Visualbuilder\EmailTemplates\EmailTemplatesPlugin;
  
 public function panel(Panel $panel): Panel
@@ -58,23 +60,29 @@ public function panel(Panel $panel): Panel
 ```
 Menu Group and sort order can be set in the config
 
-
 ## Usage
 
 ### HTML Editor
 Edit email content in the admin and use tokens to inject model or config content.
 ![Email Preview](./media/EmailEditor.png)
 
-Note: The seeder can also be edited directly if you wish to prepopulate with your own content.
-`Database\Seeders\EmailTemplateSeeder.php`
-
 ### Tokens
 Token format is ##model.attribute##.  When calling the email pass any referenced models to replace the tokens automatically.
 
-You can also include config values in the format ##config.file.key## eg ##config.app.name##.  In the email tempalates config file you must whitelist keys that should be allowed.
-We shouldn't allow users to include any key which could compromise security.
+You can also include config values in the format ##config.file.key## eg ##config.app.name##.
 
+*In the email templates config file you must specify keys that are allowed to be replaced.*
 
+```php
+    /**
+     * Allowed config keys which can be inserted into email templates
+     * eg use ##config.app.name## in the email template for automatic replacement.
+     */
+    'config_keys' => [
+        'app.name',
+        'app.url',
+        'email-templates.customer-services'
+```
 ### Implementing out of the box templates
 
 Emails may be sent directly, via a notification or an event listener.  
