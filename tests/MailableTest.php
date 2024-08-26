@@ -29,7 +29,9 @@ it('can replace tokens in user registered email', function () {
     );
 
     $this->makeTheme();
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+            'name' => "Michael Row"
+    ]);
     $mailable = new UserRegisteredEmail($user);
     $mailable->assertSeeInHtml("Dear $user->name,");
 });
@@ -54,7 +56,9 @@ it('can replace tokens in user password reset request email', function () {
     );
 
     $this->makeTheme();
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+            'name' => "Michael Row"
+    ]);
     $token = Str::random(24);
     $tokenUrl = "https://yourwebsite.com/user/password/reset/$token";
     $mailable = new UserRequestPasswordResetEmail($user, $tokenUrl);
@@ -78,7 +82,9 @@ it('can replace tokens in user password reset success email', function () {
     );
 
     $this->makeTheme();
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+            'name' => "Michael Row"
+    ]);
     $mailable = new UserPasswordResetSuccessEmail($user);
     $mailable->assertSeeInHtml("Dear $user->name,");
     $mailable->assertSeeInHtml("Your password has been reset.");
@@ -101,7 +107,9 @@ it('can replace tokens in user account locked out email', function () {
     );
 
     $this->makeTheme();
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+            'name' => "Michael Row"
+    ]);
     $mailable = new UserLockedOutEmail($user);
     $mailable->assertSeeInHtml("Dear $user->name,");
     $mailable->assertSeeInHtml("Sorry your account has been locked out due to too many bad password attempts.");
@@ -127,7 +135,9 @@ it('can replace tokens in user verify email', function () {
     );
 
     $this->makeTheme();
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+            'name' => "Michael Row"
+    ]);
     $token = Str::random(64);
     $verificationUrl = "https://yourwebsite.com/verify-email/$user->id/$token";
     $mailable = new UserVerifyEmail($user, $verificationUrl);
@@ -150,7 +160,9 @@ it('can replace tokens in user verified email', function () {
     );
 
     $this->makeTheme();
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+            'name' => "Michael Row"
+    ]);
     $mailable = new UserVerifiedEmail($user);
     $mailable->assertSeeInHtml($user->email);
 
@@ -173,7 +185,9 @@ it('can replace tokens in user logged in email', function () {
     );
 
     $this->makeTheme();
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+            'name' => "Michael Row"
+    ]);
     $mailable = new UserLoginEmail($user);
     $mailable->assertSeeInHtml("Hi $user->name,");
 });
