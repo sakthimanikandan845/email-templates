@@ -180,18 +180,19 @@ In the config file ``config/filament-email-templates.php`` logo, contacts, links
     ],
 
 ```
+If you wish to directly edit the template blade files, see the primary template here:
+- **Path**: `resources/views/vendor/vb-email-templates/email/default.php`
 
-If you wish to directly edit the template blade files see the primary template here:-
-`resources/views/vendor/vb-email-templates/email/default.php`
+New templates in this directory will be automatically visible in the email template editor dropdown for selection.
 
-You are free to create new templates in this directory which will be automatically visible in the email template editor dropdown for selection.
+#### Useful Tip
+Not all email clients (e.g., Outlook) render CSS from a stylesheet effectively. To ensure maximum compatibility, it's best to **put styles inline**. For checking how your email looks across different clients, [Litmus Email Previews](https://www.litmus.com/landing-page/email-previews) is highly recommended.
 
 ### Translations
-Each email template has a key and a language so
+Each email template is identified by a key and a language:
 
-**Key**: user-password-reset
-
-**Language**: en_gb
+- **Key**: `user-password-reset`
+- **Language**: `en_gb`
 
 This allows the relevant template to be selected based on the users locale - You will need to save the users preferred language to implement this.
 
@@ -225,10 +226,8 @@ We've currently opted to keep using a separate Mailable Class for each email typ
 The package provides an action to build the class if the file does not exist in app\Mail\VisualBuilder\EmailTemplates.
 
 ![Build Class](./media/BuildClass.png)
-
-Note: I think we could easily implement a GenericMailable class to eliminate the need to create classes for each mail type.
-
 Currently generated Mailable Classes will use the BuildGenericEmail Trait
+
 ```php
 <?php
 
@@ -243,8 +242,8 @@ class MyFunkyNewEmail extends Mailable
 {
     use Queueable, SerializesModels, BuildGenericEmail;
 
-    public $template = 'email-template-key';  //Change this to the key of the email template content to load
-    public $sendTo;
+    public string $template = 'email-template-key';  //Change this to the key of the email template content to load
+    public string $sendTo;
 
     /**
      * Create a new message instance.
@@ -261,13 +260,13 @@ class MyFunkyNewEmail extends Mailable
 Just pass through the models you need and assign them in the constructor.
 
 ```php
-class MyFunkyNewEmai extends Mailable
+class MyFunkyNewEmail extends Mailable
 {
     use Queueable, SerializesModels, BuildGenericEmail;
 
-    public $template = 'email-template-key';  //Change this to the key of the email template content to load
-    public $sendTo;
-    public $booking;
+    public string $template = 'email-template-key';  //Change this to the key of the email template content to load
+    public string $sendTo;
+    public Model $booking;
 
     public function __construct($user, Booking $booking) {
             $this->user       = $user;
@@ -307,24 +306,62 @@ In here you can see how to pass an attachment:-
 
 The attachment should be passed to the Mail Class and set as a public property.
 
-In this case we've passed an Order model and an Invoice PDF attachment.
+In this case we've passed an Order model and an Invoice model which has a PDF.
 
 ```php
 class SalesOrderEmail extends Mailable
 {
     use Queueable, SerializesModels, BuildGenericEmail;
 
-    public $template = 'email-template-key';  //Change this to the key of the email template content to load
-    public $sendTo;
+    public string $template = 'email-template-key';
+    public string $sendTo;
     public $attachment;
-    public $order;
+    public User $user;
+    public Order $order;
+    public Invoice $invoice;
 
-    public function __construct($user, Order $order, $invoice) {
-            $this->user       = $user;
-            $this->order      = $order;
-            $this->attachment = $invoice;
-            $this->sendTo     = $user->email;
-        }
+    /**
+     * Constructor for SalesOrderEmail.
+     *
+     * @param User $user User object
+     * @param Order $order Order object
+     * @param Invoice $invoice Invoice object
+     */
+    public function __construct($user, $order, $invoice) {
+        $this->user = $user;
+        $this->order = $order;
+        $this->invoice = $invoice;
+        $this->attachment = $invoice->getPdf(); // Missing semicolon added
+        $this->sendTo = $user->email;
+    }
+}
+```
+
+*** Update ***
+From php8.0 the above code can be shortend to:_
+
+```php
+class SalesOrderEmail extends Mailable
+{
+    use Queueable, SerializesModels, BuildGenericEmail;
+
+    public string $template = 'email-template-key'; 
+    public string $sendTo;
+    public $attachment;
+
+    /**
+     * Constructor for SalesOrderEmail using PHP 8 constructor property promotion.
+     *
+     * @param User $user User object
+     * @param Order $order Order object
+     * @param Invoice $invoice Invoice object
+     */
+    public function __construct(public User $user, public Order $order, public Invoice $invoice) {
+        $this->attachment = $invoice->getPdf(); 
+        $this->sendTo = $user->email;
+    }
+}
+
 ```
 
 The attachment is handled in the build function of the BuildGenericEmail trait.
