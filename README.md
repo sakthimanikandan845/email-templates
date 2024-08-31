@@ -25,7 +25,7 @@
 
 We use the standard Laravel mail sending capability, the package simply allows content editing and faster adding of new template Classes
 
-![Email Preview](./media/ThemeEditor.jpg)
+![Email Preview](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/ThemeEditor.jpg)
 
 ## Installation
 
@@ -64,7 +64,7 @@ Menu Group and sort order can be set in the config
 
 ### HTML Editor
 Edit email content in the admin and use tokens to inject model or config content.
-![Email Preview](./media/EmailEditor.png)
+![Email Preview](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/EmailEditor.png)
 
 ### Tokens
 Token format is ##model.attribute##.  When calling the email pass any referenced models to replace the tokens automatically.
@@ -214,7 +214,7 @@ Languages that should be shown on the language picker can be set in the config
     ]
 ```
 
-![Language Picker](./media/Languages.png)
+![Language Picker](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/Languages.png)
 
 Flag icons are loaded from CDN: https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css
 see https://www.npmjs.com/package/flag-icons
@@ -225,7 +225,7 @@ see https://www.npmjs.com/package/flag-icons
 We've currently opted to keep using a separate Mailable Class for each email type.  This means when you create a new template in the admin, it will require a new php Class.
 The package provides an action to build the class if the file does not exist in app\Mail\VisualBuilder\EmailTemplates.
 
-![Build Class](./media/BuildClass.png)
+![Build Class](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/BuildClass.png)
 Currently generated Mailable Classes will use the BuildGenericEmail Trait
 
 ```php
