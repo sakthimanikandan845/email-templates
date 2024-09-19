@@ -19,7 +19,10 @@ class EmailTemplateThemeResource extends Resource
 {
     protected static ?string $model = EmailTemplateTheme::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-paint-brush';
+    public static function getNavigationIcon(): ?string
+    {
+        return config('filament-email-templates.navigation.themes.icon');
+    }
 
     public static function getNavigationGroup(): ?string
     {
@@ -33,12 +36,12 @@ class EmailTemplateThemeResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('vb-email-templates::email-templates.theme_resource_name.singular');
+        return config('filament-email-templates.navigation.themes.label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('vb-email-templates::email-templates.theme_resource_name.plural');
+        return config('filament-email-templates.navigation.themes.label');
     }
 
     public static function getCluster(): string
