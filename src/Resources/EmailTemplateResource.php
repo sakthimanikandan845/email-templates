@@ -51,12 +51,12 @@ class EmailTemplateResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return config('filament-email-templates.navigation.themes.label');
+        return config('filament-email-templates.navigation.templates.label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return config('filament-email-templates.navigation.themes.label');
+        return config('filament-email-templates.navigation.templates.label');
     }
 
     public static function getCluster(): string
